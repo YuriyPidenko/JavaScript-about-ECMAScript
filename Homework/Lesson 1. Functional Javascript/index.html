@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script>
+
+        //         1) Минимальное число в массиве:
+
+        // const arr = [1, 5, 7, 9];
+        // const min = Math.min(...arr);
+        // console.log(min)
+
+
+
+        // 2) Функция createCounter:
+
+        // function createCounter() {
+        //   let count = 0;
+
+        //   return {
+        //     increment: () => {
+        //       count++;
+        //       return count;
+        //     },
+        //     decrement: () => {
+        //       count--;
+        //       return count;
+        //     }
+        //   };
+        // }
+
+        // const counter = createCounter();
+        // console.log(counter.increment()); // 1
+        // console.log(counter.increment()); // 2
+        // console.log(counter.decrement()); // 1
+
+
+
+        // 3) Рекурсивная функция findElementByClass:
+
+        // function findElementByClass(element, className) {
+        //   if (element.classList && element.classList.contains(className)) {
+        //     return element;
+        //   }
+
+        //   for (let i = 0; i < element.children.length; i++) {
+        //     const foundElement = findElementByClass(element.children[i], className);
+        //     if (foundElement) {
+        //       return foundElement;
+        //     }
+        //   }
+
+        //   return null; // Если элемент не найден
+        // }
+
+        // Пример использования (требуется HTML-структура):
+        /*
+        <div id="root">
+          <div>
+            <p class="my-class">This is the target element</p>
+          </div>
+          <div>
+            <span>Another element</span>
+          </div>
+        </div>
+        */
+        // const rootElement = document.getElementById('root');
+        // const targetElement = findElementByClass(rootElement, 'my-class');
+        // console.log(targetElement); // Выведет <p class="my-class">This is the target element</p>
+    </script>
+</body>
+
+</html>
