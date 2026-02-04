@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // Задание 1
+        function getPrototypeChain(obj) {
+            const prototypeChain = [];
+            let current = obj;
+
+            while (current) {
+                prototypeChain.push(current);
+                current = Object.getPrototypeOf(current); // Это важно!
+            }
+
+            return prototypeChain;
+        }
+
+        // Пример использования
+        const arr = [1, 2, 3]
+        const chain = getPrototypeChain(arr);
+        console.log(chain);
+
+        // Задание 2
+        function Person(name, age) {
+            this.name = name;
+            this.age = age;
+
+            this.introduce = function () {
+                console.log(`Меня зовут ${this.name} и мне ${this.age} лет.`);
+            };
+        }
+
+        // Пример использования
+        const person1 = new Person("John", 25);
+        person1.introduce(); // Вывод: Меня зовут John и мне 25 лет.
+
+        // Задание 3
+        function BankAccount(accountNumber, balance) {
+            this.accountNumber = accountNumber;
+            this.balance = balance;
+
+            this.deposit = function (amount) {
+                this.balance += amount;
+            };
+
+            this.withdraw = function (amount) {
+                if (this.balance >= amount) {
+                    this.balance -= amount;
+                } else {
+                    console.log("Недостаточно средств на счете.");
+                }
+            };
+
+            this.getBalance = function () {
+                return this.balance;
+            };
+        }
+
+        // Пример использования
+        const account1 = new BankAccount("1234567890", 1000);
+        console.log(account1.getBalance()); // Вывод: 1000
+        account1.deposit(500);
+        console.log(account1.getBalance()); // Вывод: 1500
+        account1.withdraw(200);
+        console.log(account1.getBalance()); // Вывод: 1300
+        account1.withdraw(2000); // Вывод: "Недостаточно средств на счете."
+
+        // Задание 4
+        class Animal {
+            constructor(name) {
+                this.name = name;
+            }
+
+            speak() {
+                console.log("Животное издает звук.");
+            }
+        }
+
+        class Dog extends Animal {
+            constructor(name, breed) {
+                super(name); // Вызываем конструктор родительского класса
+                this.breed = breed;
+            }
+
+            fetch() {
+                console.log(`Собака ${this.name} принесла мяч.`);
+            }
+
+            speak() {
+                console.log(`Собака ${this.name} лает`);
+            }
+        }
+
+        // Задание 5: Пример использования
+        const animal1 = new Animal("Животное");
+        animal1.speak(); // Вывод: Животное издает звук.
+
+        const dog1 = new Dog("Бобик", "Дворняжка");
+        dog1.speak(); // Вывод: Собака Бобик лает.
+        console.log(dog1.breed); // Вывод: Дворняжка
+        dog1.fetch(); // Вывод: Собака Бобик принесла мяч.
+
+    </script>
+</body>
+
+</html>
