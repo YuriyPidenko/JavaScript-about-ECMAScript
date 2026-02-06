@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script>
+        // Задание 1
+
+        function delayedMessage(message, delay) {
+            setTimeout(() => {
+                console.log(message);
+            }, delay);
+        }
+
+        delayedMessage("Сообщение 1", 2000);
+        delayedMessage("Сообщение 2", 1000);
+        delayedMessage("Сообщение 3", 3000);
+
+        // Сообщение "Конец программы" будет выведено сразу же, 
+        // потому что setTimeout асинхронный и не блокирует выполнение основного кода.
+        console.log("Конец программы");
+
+        // Задание 2
+
+        const tasks = [
+            { name: 'task 1', time: 1000 },
+            { name: 'task 2', time: 2000 },
+            { name: 'task 3', time: 3000 },
+            { name: 'task 4', time: 4000 },
+            { name: 'task 5', time: 5000 }
+        ];
+
+        function executeTasksSequentially(taskList) {
+            let cumulativeDelay = 0;
+            taskList.forEach(task => {
+                cumulativeDelay += task.time;
+                setTimeout(() => {
+                    console.log(`Выполнение задачи: ${task.name}`);
+                }, cumulativeDelay);
+            });
+        }
+
+        executeTasksSequentially(tasks);
+
+        // Задание 3
+
+        function loadData(url) {
+            const xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        console.log("Данные загружены (XMLHttpRequest):", xhr.responseText);
+                    } else {
+                        console.error("Ошибка загрузки данных (XMLHttpRequest):", xhr.status, xhr.statusText);
+                    }
+                }
+            };
+
+            xhr.open("GET", url, true);
+            xhr.send();
+        }
+
+        // Пример вызова loadData (замените URL на реальный API, если нужно)
+        // loadData("https://jsonplaceholder.typicode.com/users"); 
+
+        // Задание 4
+
+        async function loadDataWithFetch(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Ошибка HTTP: ${response.status}`);
+                }
+                const data = await response.json(); // Или response.text() в зависимости от типа данных
+                console.log("Данные загружены (fetch):", data);
+            } catch (error) {
+                console.error("Ошибка загрузки данных (fetch):", error);
+            }
+        }
+
+        // Пример вызова loadDataWithFetch (замените URL на реальный API, если нужно)
+        // loadDataWithFetch("https://jsonplaceholder.typicode.com/users");
+
+
+        // Задание 5
+
+        // Предполагается, что у вас есть HTML-структура для отображения списка пользователей
+        // и кнопка для сортировки.
+
+        // HTML-пример:
+        /*
+        <button id="sortButton">Сортировать по имени</button>
+        <ul id="userList"></ul>
+        */
+
+        const userUrl = "https://jsonplaceholder.typicode.com/users";
+        const userListElement = document.getElementById("userList");
+        const sortButton = document.getElementById("sortButton");
+
+        let users = []; // Массив для хранения пользователей
+
+        // Функция для отображения списка пользователей
+        function renderUsers(userArray) {
+            userListElement.innerHTML = ""; // Очищаем предыдущий список
+            userArray.forEach(user => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `Имя: ${user.name}, Email: ${user.email}`;
+                userListElement.appendChild(listItem);
+            });
+        }
+
+        // Функция для загрузки пользователей с сервера
+        async function fetchAndDisplayUsers() {
+            try {
+                const response = await fetch(userUrl);
+                if (!response.ok) {
+                    throw new Error(`Ошибка HTTP: ${response.status}`);
+                }
+                users = await response.json();
+                renderUsers(users); // Отображаем пользователей после загрузки
+            } catch (error) {
+                console.error("Ошибка загрузки пользователей:", error);
+                userListElement.innerHTML = "<li>Не удалось загрузить пользователей.</li>";
+            }
+        }
+
+        // Функция для сортировки пользователей по имени
+        function sortUsersByName() {
+            // Создаем копию массива, чтобы не изменять исходный порядок, если это нужно
+            const sortedUsers = [...users].sort((a, b) => {
+                const nameA = a.name.toLowerCase();
+                const nameB = b.name.toLowerCase();
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+                return 0;
+            });
+            renderUsers(sortedUsers);
+        }
+
+        // Инициализация: загружаем пользователей при загрузке страницы
+        document.addEventListener("DOMContentLoaded", fetchAndDisplayUsers);
+
+        // Добавляем обработчик события для кнопки сортировки
+        if (sortButton && userListElement) {
+            sortButton.addEventListener("click", sortUsersByName);
+        } else {
+            console.error("Не найдены элементы HTML для списка пользователей или кнопки сортировки.");
+        }
+
+    </script>
+</body>
+
+</html>
