@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // Получение данных о пользователе
+
+        async function getUserData(userId) {
+            const url = `https://jsonplaceholder.typicode.com/users/${userId}`; // Используем URL из предыдущего задания
+            try {
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        throw new Error(`Пользователь с ID ${userId} не найден.`);
+                    } else {
+                        throw new Error(`Ошибка HTTP: ${response.status}`);
+                    }
+                }
+
+                const userData = await response.json();
+                return userData; // Возвращаем объект с данными пользователя
+            } catch (error) {
+                console.error("Ошибка при получении данных пользователя:", error);
+                throw error; // Перебрасываем ошибку, чтобы ее можно было обработать в вызывающем коде
+            }
+        }
+
+        // Пример использования getUserData:
+        async function displayUser(id) {
+            try {
+                const user = await getUserData(id);
+                console.log(`Данные пользователя (ID ${id}):`, user);
+            } catch (error) {
+                console.error(`Не удалось получить данные для пользователя ID ${id}: ${error.message}`);
+            }
+        }
+
+        // displayUser(1); // Успешное получение
+        // displayUser(999); // Попытка получить несуществующего пользователя
+
+
+        // Отправка данных на сервер
+
+        async function saveUserData(user) {
+            const url = "https://jsonplaceholder.typicode.com/users"; // Пример URL для отправки данных
+            try {
+                const response = await fetch(url, {
+                    method: "POST", // Метод POST для создания нового ресурса
+                    headers: {
+                        "Content-Type": "application/json", // Указываем, что отправляем JSON
+                    },
+                    body: JSON.stringify(user), // Сериализуем объект пользователя в JSON-строку
+                });
+
+                if (!response.ok) {
+                    // Можно добавить более детальную обработку ошибок HTTP, если API их предоставляет
+                    throw new Error(`Ошибка при сохранении данных пользователя: ${response.status}`);
+                }
+
+                // Если сервер вернул данные о созданном пользователе (например, с присвоенным ID)
+                // const savedUser = await response.json();
+                // console.log("Данные успешно отправлены и сохранены:", savedUser);
+
+                return response; // Возвращаем объект ответа (или можно вернуть null/true, если данные не нужны)
+
+            } catch (error) {
+                console.error("Ошибка при отправке данных пользователя:", error);
+                throw error; // Перебрасываем ошибку
+            }
+        }
+
+        // Пример использования saveUserData:
+        const newUser = {
+            name: 'Jane Doe',
+            username: 'janedoe',
+            email: 'jane.doe@example.com',
+            address: {
+                street: 'Kulas Light',
+                suite: 'Apt. 556',
+                city: 'Gwenborough',
+                zipcode: '92998-3874',
+                geo: {
+                    lat: '-37.3159',
+                    lng: '81.1496'
+                }
+            },
+            phone: '1-770-736-8031 x56442',
+            website: 'hildegard.org',
+            company: {
+                name: 'Romaguera-Crona',
+                catchPhrase: 'Multi-layered client-server neural-net',
+                bs: 'harness real-time e-markets'
+            }
+        };
+
+        saveUserData(newUser)
+            .then(response => {
+                console.log('User data saved successfully');
+                // responsefunction changeStyleDelayed(elementId, delay) {
+                setTimeout(() => {
+                    const element = document.getElementById(elementId);
+                    if (element) {
+                        // Пример изменения стиля: добавим рамку и изменим цвет фона
+                        element.style.border = "2px solid red";
+                        element.style.backgroundColor = "yellow";
+                        element.style.padding = "10px"; // Дополнительный стиль для наглядности
+                        console.log(`Стиль элемента с ID "${elementId}" изменен.`);
+                    } else {
+                        console.warn(`Элемент с ID "${elementId}" не найден.`);
+                    }
+                }, delay);
+            });
+
+        // Пример использования changeStyleDelayed:
+        // Для этого нужно создать HTML-элемент с id="myElement" в вашей HTML-странице.
+
+    </script>
+</body>
+
+</html>
+
+<!-- 
+// Пример HTML:
+<!DOCTYPE html>
+<html>
+<head>
+<title>Delayed Style Change</title>
+</head>
+<body>
+  <div id="myElement" style="width: 100px; height: 100px; background-color: lightblue; margin: 20px;">
+    Это элемент
+  </div>
+
+  <script>
+    // Вставьте сюда код JavaScript для changeStyleDelayed и ее вызова
+    function changeStyleDelayed(elementId, delay) {
+      setTimeout(() => {
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.style.border = "2px solid red";
+          element.style.backgroundColor = "yellow";
+          element.style.padding = "10px";
+          console.log(`Стиль элемента с ID "${elementId}" изменен.`);
+        } else {
+          console.warn(`Элемент с ID "${elementId}" не найден.`);
+        }
+      }, delay);
+    }
+
+    changeStyleDelayed('myElement', 2000); // Через 2 секунды изменит стиль элемента с id 'myElement'
+  </script>
+</body>
+</html>
+ -->
